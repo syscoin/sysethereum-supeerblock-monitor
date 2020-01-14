@@ -94,6 +94,7 @@ function configMailer(config) {
 }
 
 async function getRemoteEthereumSuperblockContract(fromBlock) {
+  const fromBlockHash = '0x' + fromBlock.toString(16);
   const options = {
     uri: `${config.infura_api}`,
     method: 'POST',
@@ -102,7 +103,7 @@ async function getRemoteEthereumSuperblockContract(fromBlock) {
       "method": "eth_getLogs",
       "params": [{
         "address": "0xd03a860F481e83a8659640dC75008e9FcDF5d879",
-        "fromBlock": '0x' + fromBlock.toString(16)
+        "fromBlock": fromBlockHash
       }],
       "id": 1
     },
