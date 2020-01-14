@@ -52,7 +52,7 @@ async function checkEthereumSuperblockContract(mailer) {
       local: JSON.stringify(localGethHeight),
       remote: JSON.stringify(lastSbTxHeight)
     };
-    await sendMail(mailer, require('./messages/agent_eth_chain_height'), tokenObj);
+    await sendMail(mailer, require('./messages/sb_chain_stalled'), tokenObj);
     process.exit(0);
   } else {
     let diff = localGethHeight - lastSbTxHeight;
