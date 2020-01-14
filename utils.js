@@ -40,7 +40,7 @@ async function checkEthereumSuperblockContract(mailer) {
   try {
     lastSbTxHeight = parseInt(remote.result[remote.result.length - 1].blockNumber, 16);
   }catch(e) {
-    console.log("Error getting remote height, response was:", remote.result);
+    console.log("Error getting remote height, response was:", remote);
   }
 
 
