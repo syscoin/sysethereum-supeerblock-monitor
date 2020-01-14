@@ -33,7 +33,7 @@ async function checkEthereumSuperblockContract(mailer) {
   localGethHeight = localGethHeight.geth_current_block;
 
   //get sb contract data
-  let remote = await getRemoteEthereumSuperblockContract(localGethHeight - (config.eth_block_threshold * 2));
+  let remote = await getRemoteEthereumSuperblockContract(localGethHeight - (config.eth_block_threshold * 2.5));
 
   //get block height of last tx
   let lastSbTxHeight;
