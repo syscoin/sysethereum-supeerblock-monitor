@@ -95,7 +95,7 @@ function configMailer(config) {
 
 async function getRemoteEthereumSuperblockContract(fromBlock) {
   const fromBlockHash = '0x' + fromBlock.toString(16);
-  console.log('Fetching remote fromBlock:', fromBlockHash);
+  console.log('Fetching remote fromBlock:', fromBlockHash, fromBlock);
   const options = {
     uri: `${config.infura_api}`,
     method: 'POST',
