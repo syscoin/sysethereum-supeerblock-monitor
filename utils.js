@@ -36,7 +36,12 @@ async function checkEthereumSuperblockContract(mailer) {
   let remote = await getRemoteEthereumSuperblockContract(localGethHeight - config.eth_block_threshold);
 
   //get block height of last tx
-  let lastSbTxHeight = parseInt(remote.result[remote.result.length - 1].blockNumber, 16);
+  let lastSbTxHeight;
+  try {
+    lastSbTxHeight = parseInt(remote.result[remote.result.length - 1].blockNumber, 16);
+  }catch(e) {
+    console.log("Error getting remote height, response was:", remote.result);
+  }
 
 
   if (remote.result.length === 0 || (localGethHeight - lastSbTxHeight) >= config.eth_block_threshold) {
