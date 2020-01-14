@@ -41,7 +41,7 @@ async function checkEthereumSuperblockContract(mailer) {
     lastSbTxHeight = parseInt(remote.result[remote.result.length - 1].blockNumber, 16);
   }catch(e) {
     console.log("Error getting remote height, response was:", remote);
-    process.exit(0);
+    console.log(`It appears no events have happened in ${config.eth_block_threshold}`)
   }
 
 
