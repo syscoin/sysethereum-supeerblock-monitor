@@ -13,7 +13,7 @@ console.log('Sysethereum sb monitor started.');
 async function checkForAlerts(mailer) {
   const status = await utils.checkEthereumSuperblockContract(mailer);
 
-  io.sockets.emit('superblockchain', {
+  io.sockets.emit('message', {
     topic: 'superblockchain',
     message: {
       ...status
