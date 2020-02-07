@@ -27,7 +27,7 @@ async function sendMail(mailer, message, tokenObj = null) {
   }
 }
 
-async function checkEthereumSuperblockContract(mailer) {
+async function checkEthereumSuperblockContract(mailer, io) {
   //determine fromBlock for ethLogs call based on local geth data
   let localGethHeight = await getLocalEthereumChainHeight();
   localGethHeight = localGethHeight.geth_current_block;
@@ -37,8 +37,10 @@ async function checkEthereumSuperblockContract(mailer) {
 
   //get block height of last tx
   let lastSbTxHeight;
+  let lastSbHash;
   try {
     lastSbTxHeight = parseInt(remote.result[remote.result.length - 1].blockNumber, 16);
+    lastSbHash = remote.result[remote.result.length - 1].blockHash;
   }catch(e) {
     console.log("Error getting remote height, response was:", remote);
     console.log(`It appears no events have happened in ${config.eth_block_threshold}`)
@@ -51,8 +53,18 @@ async function checkEthereumSuperblockContract(mailer) {
     console.log('Last tx height chain:', lastSbTxHeight);
     const tokenObj = {
       local: JSON.stringify(localGethHeight),
-      remote: JSON.stringify(lastSbTxHeight)
+      remote: JSON.stringify( )
     };
+
+    io.emit('superblockchain', {
+      topic: 'superblockchain',
+      message: {
+        localGethHeight,
+        lastSbTxHeight,
+        lastSbHash
+      }
+    });
+
     await sendMail(mailer, require('./messages/sb_chain_stalled'), tokenObj);
     process.exit(0);
   } else {
@@ -60,6 +72,15 @@ async function checkEthereumSuperblockContract(mailer) {
     console.log(`Eth height within threshold, local/remote height difference: ${diff}`);
     console.log('Local chain:', localGethHeight);
     console.log('Last tx height chain:', lastSbTxHeight);
+
+    io.emit('superblockchain', {
+      topic: 'superblockchain',
+      message: {
+        localGethHeight,
+        lastSbTxHeight,
+        lastSbHash
+      }
+    });
   }
 }
 
