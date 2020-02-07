@@ -27,7 +27,7 @@ async function sendMail(mailer, message, tokenObj = null) {
   }
 }
 
-async function checkEthereumSuperblockContract(mailer, io) {
+async function checkEthereumSuperblockContract(mailer) {
   //determine fromBlock for ethLogs call based on local geth data
   let localGethHeight = await getLocalEthereumChainHeight();
   localGethHeight = localGethHeight.geth_current_block;
@@ -56,31 +56,14 @@ async function checkEthereumSuperblockContract(mailer, io) {
       remote: JSON.stringify( )
     };
 
-    io.emit('superblockchain', {
-      topic: 'superblockchain',
-      message: {
-        localGethHeight,
-        lastSbTxHeight,
-        lastSbHash
-      }
-    });
-
     await sendMail(mailer, require('./messages/sb_chain_stalled'), tokenObj);
-    process.exit(0);
+    return { localGethHeight, lastSbTxHeight, lastSbHash };
   } else {
     let diff = localGethHeight - lastSbTxHeight;
     console.log(`Eth height within threshold, local/remote height difference: ${diff}`);
     console.log('Local chain:', localGethHeight);
     console.log('Last tx height chain:', lastSbTxHeight);
-
-    io.emit('superblockchain', {
-      topic: 'superblockchain',
-      message: {
-        localGethHeight,
-        lastSbTxHeight,
-        lastSbHash
-      }
-    });
+    return { localGethHeight, lastSbTxHeight, lastSbHash };
   }
 }
 

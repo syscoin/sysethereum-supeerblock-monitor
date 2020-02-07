@@ -18,5 +18,6 @@
     "port": "8336"
   },
   "notify_email": "sysethagent@blockchainfoundry.co;dwasyluk@blockchainfoundry.co",
-  "sender_email": "dwasyluk@blockchainfoundry.co"
+  "sender_email": "dwasyluk@blockchainfoundry.co",
+  "ws_port": 9991
 }

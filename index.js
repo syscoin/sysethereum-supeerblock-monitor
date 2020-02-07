@@ -1,8 +1,8 @@
 const nodemailer = require('nodemailer');
 const os = require('os');
-const io = require('socket.io')(9991);
 
 const config = require('./config');
+const io = require('socket.io')(config.ws_port);
 const utils = require('./utils');
 
 let mailConfig = utils.configMailer(config);
@@ -11,7 +11,14 @@ let checkInterval;
 console.log('Sysethereum sb monitor started.');
 
 async function checkForAlerts(mailer) {
-  await utils.checkEthereumSuperblockContract(mailer, io);
+  const status = await utils.checkEthereumSuperblockContract(mailer);
+
+  io.sockets.emit('superblockchain', {
+    topic: 'superblockchain',
+    message: {
+      ...status
+    }
+  });
 }
 
 checkInterval = setInterval(checkForAlerts, config.interval * 1000, transporter);
