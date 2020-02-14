@@ -19,5 +19,6 @@
   },
   "notify_email": "sysethagent@blockchainfoundry.co;dwasyluk@blockchainfoundry.co",
   "sender_email": "dwasyluk@blockchainfoundry.co",
-  "ws_port": 9991
+  "ws_port": 9991,
+  "port": 9999
 }

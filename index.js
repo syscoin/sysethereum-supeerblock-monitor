@@ -1,28 +1,21 @@
+const app = require('express')();
+const cors = require('cors')
 const nodemailer = require('nodemailer');
-const os = require('os');
 
 const config = require('./config');
-const io = require('socket.io')(config.ws_port);
 const utils = require('./utils');
 
 let mailConfig = utils.configMailer(config);
 let transporter = nodemailer.createTransport(mailConfig);
-let checkInterval;
+
+app.use(cors())
+
+app.get('/status', async (req, res) => {
+  const status = await utils.checkEthereumSuperblockContract(transporter);
+
+  return res.send({ ...status });
+});
+
+app.listen(config.port);
+
 console.log('Sysethereum sb monitor started.');
-
-async function checkForAlerts(mailer) {
-  const status = await utils.checkEthereumSuperblockContract(mailer);
-
-  io.sockets.emit('message', {
-    topic: 'superblockchain',
-    message: {
-      ...status
-    }
-  });
-}
-
-checkInterval = setInterval(checkForAlerts, config.interval * 1000, transporter);
-
-
-
-
