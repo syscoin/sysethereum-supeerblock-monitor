@@ -1,7 +1,7 @@
 const dotenv = require('dotenv');
 dotenv.config({ silent: true });
 
-module.exports = process.env.CONFIG || {
+module.exports = JSON.parse(process.env.CONFIG) || {
   "interval": 2,
   "infura_api": "",
   "eth_block_threshold": 1440,

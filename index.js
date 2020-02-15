@@ -3,6 +3,7 @@ const cors = require('cors');
 const nodemailer = require('nodemailer');
 
 const config = require('./config');
+console.log('config', config);
 const utils = require('./utils');
 
 let mailConfig = utils.configMailer(config);
