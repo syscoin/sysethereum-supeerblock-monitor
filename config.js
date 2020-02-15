@@ -22,5 +22,6 @@ module.exports = process.env.CONFIG || {
   },
   "notify_email": "sysethagent@blockchainfoundry.co;dwasyluk@blockchainfoundry.co",
   "sender_email": "dwasyluk@blockchainfoundry.co",
-  "port": 9991
+  "port": 9991,
+  "enable_mail": false
 };
