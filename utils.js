@@ -53,7 +53,7 @@ async function checkEthereumSuperblockContract(mailer) {
     console.log('Last tx height chain:', lastSbTxHeight);
     const tokenObj = {
       local: JSON.stringify(localGethHeight),
-      remote: JSON.stringify( )
+      remote: JSON.stringify(lastSbTxHeight)
     };
 
     await sendMail(mailer, require('./messages/sb_chain_stalled'), tokenObj);
