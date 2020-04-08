@@ -5,11 +5,21 @@ const rp = require('request-promise');
 const jtr = new Jtr();
 
 const config = require('./config');
+let lastMailTime = null;
 
 const syscoinClient = new syscoin.SyscoinRpcClient({host: config.syscoin.host, rpcPort: config.syscoin.port, username: config.syscoin.user, password: config.syscoin.pass});
 
 async function sendMail(mailer, message, tokenObj = null) {
   console.log('sendmail');
+
+  const emailTimeout = config.email_retry_minutes * 1000 * 60; // minutes
+  console.log('Last email time:', lastMailTime, emailTimeout, Date.now());
+  if (lastMailTime !== null && Date.now() < (lastMailTime + emailTimeout)) {
+    const time = (lastMailTime + emailTimeout) - Date.now();
+    console.log('Waiting to send next alert email. Ms remaining:', time);
+    return;
+  }
+
   message.to = config.notify_email;
   message.from = config.sender_email;
   if (tokenObj) {
